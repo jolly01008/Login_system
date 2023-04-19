@@ -10,10 +10,12 @@ mongoose.connect(process.env.MONGODB_URI,{
 
 const db = mongoose.connection //設定db並且監聽
 
-db.on('error',()=>{
+db.on('error', () => {
   console.log('mongodb error!')
 })
 
-db.once('open',() =>{
+db.once('open', () => {
   console.log('mongodb connected!')
 })
+
+module.exports = db
