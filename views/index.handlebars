@@ -9,19 +9,19 @@
   <form action="/" method="POST" class="col-12">
 
     <div class="mt-4  text-center">
-      <input type="email" name="email" id="email" placeholder="Email" class="p-3 col-4"  value="{{email}}" required>
+      <input type="email" name="email" id="email" placeholder="Email" class="p-3 col-4" value="{{email}}"  required>
     </div>
     <div class="mt-4  text-center">
-      <input type="text" name="password" id="password" placeholder="Password" class="p-3 col-4" required>
+      <input type="password" name="password" id="password" placeholder="Password" class="p-3 col-4" required>
     </div>
-    {{#if error}}
-    <div class="alert alert-danger" role="alert">
-      {{error}}
-    </div>
+
+    {{#if errorMessage }}
+      <h6 class="text-center mt-3" style="color:red" >{{ errorMessage }}</h6>
     {{/if}}
+    
     <div class="text-center">
       <button type="submit" class="mt-5 btn btn-outline-dark px-4">Sign in</button>
     </div>
-    
+
   </form>
 </div>
