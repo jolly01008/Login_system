@@ -4,11 +4,12 @@ const Users = require("../../models/Users")
 
 
 router.get('/',(req,res) => {
-  const usercookie = req.cookies.userName
-  //判斷是否有req.cookies.userName，若有就顯示已經登入，不需再登入一次
-  if(usercookie){
-    console.log(usercookie)
-    return res.send(`Hi，${usercookie}，您已經登入`)
+  const userSession = req.session.user
+  //進到首頁查看是否有userSession
+  if(userSession){
+    console.log("req.session:",req.session)
+    console.log("req.sessionID:",req.sessionID)
+    return res.render('welcome',{ name: userSession })
   }
   res.render('index')
 })
@@ -20,14 +21,23 @@ router.post('/',(req,res) => {
   .lean()
   .then( data => {
     if(data){
-      res.cookie('userName',data.firstName)  //如果登入成功就set cookie
+      req.session.user = data.firstName  //把使用者資訊存入session store
+      console.log("req.sessionID :",req.sessionID)
       res.render('welcome',{ name: data.firstName })
     } else{
-      const errorMessage = `Wrong email or password, please try again.`
-      res.render('index', {errorMessage , email:userEmail})
+      const Message = `Wrong email or password, please try again.`
+      res.render('index', {Message , email:userEmail})
     }
   })
   .catch( error => console.log(error))
+})
+
+router.get('/logout',(req,res)=>{
+  const Message = `您已經登出`
+  req.session.destroy(() => {
+    console.log('session destroyed')
+    res.render('index',{ Message })
+  })  
 })
 
 module.exports = router 
